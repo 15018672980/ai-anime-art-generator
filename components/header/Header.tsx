@@ -59,7 +59,7 @@ const Header = () => {
               height={32}
             />
             <span className="text-gray-950 dark:text-gray-300 hidden md:block">
-              AI Anime Art Generator
+              Baby Photoshoot
             </span>
           </Link>
         </div>
