@@ -15,6 +15,7 @@ export default function FaceMix({
 }) {
     const [uploadedImage, setUploadedImage] = useState<string | null>(null);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [selectImageIndex, setSelectImageIndex] = useState<number | null>(null);
     const router = useRouter();
 
     // Sample image list - replace with your actual image list
@@ -27,6 +28,7 @@ export default function FaceMix({
 
 
 
+
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
@@ -36,88 +38,71 @@ export default function FaceMix({
         }
     };
 
-    const handleImageSelect = (image: string) => {
-       
+    const handleImageSelect = (image: string, index: number) => {
+        setSelectImageIndex(index);
+        setSelectedImage(image);
     };
 
-
     return (
-        <section className="lg:max-w-4xl md:max-w-3xl w-[95%] px-4 sm:px-6 lg:px-8 pb-8 pt-8 md:pt-12 space-y-6 text-center">
-            <div className="flex flex-col md:flex-row h-screen bg-gray-100">
-                {/* Left side */}
-                <div className="w-full md:w-1/2 p-6 overflow-y-auto flex flex-col">
-                    <div className="bg-white rounded-lg shadow-md p-6 mb-6 flex-shrink-0">
-                        <label className="block mb-4">
-                            <span className="text-gray-700 font-semibold">Upload an image:</span>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleImageUpload}
-                                className="mt-1 block w-full text-sm text-gray-500
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-full file:border-0
-                file:text-sm file:font-semibold
-                file:bg-blue-50 file:text-blue-700
-                hover:file:bg-blue-100"
+        <section className="flex flex-col md:flex-row bg-gray-100  w-[90%] mx-auto max-w-7xl">
+            {/* Left side */}
+            <div className="w-full md:w-1/4 p-6 overflow-y-auto flex flex-col">
+                <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <label className="block mb-4">
+                        <span className="text-gray-700 font-semibold">Upload an image:</span>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                        />
+                    </label>
+                    {uploadedImage && (
+                        <Image
+                            src={uploadedImage}
+                            alt="Uploaded image"
+                            width={300}
+                            height={300}
+                            className="rounded-lg shadow-sm mx-auto"
+                        />
+                    )}
+                </div>
+                <div className="bg-white rounded-lg shadow-md p-6 flex-grow">
+                    <h3 className="text-lg font-semibold mb-4">Sample Images</h3>
+                    <div className="flex space-x-4 pb-4 overflow-x-auto">
+                        {imageList.map((image, index) => (
+                            <Image
+                                key={index}
+                                src={image}
+                                alt={`Sample image ${index + 1}`}
+                                width={100}
+                                height={100}
+                                className={selectImageIndex === index ? 'border-4 border-black rounded-md cursor-pointer' : 'rounded-md cursor-pointer'}
+                                onClick={() => handleImageSelect(image, index)}
                             />
-                        </label>
-                        {uploadedImage && (
-                            <div className="mb-6">
-                                <Image
-                                    src={uploadedImage}
-                                    alt="Uploaded image"
-                                    width={300}
-                                    height={300}
-                                    className="rounded-lg shadow-sm mx-auto"
-                                />
-                            </div>
-                        )}
-                    </div>
-                    <div className="bg-white rounded-lg shadow-md p-6 flex-grow">
-                        <h3 className="text-lg font-semibold mb-4">Sample Images</h3>
-                        <div className="overflow-x-auto">
-                            <div className="flex space-x-4 pb-4">
-                                {imageList.map((image, index) => (
-                                    <div
-                                        key={index}
-                                        className={`flex-shrink-0 cursor-pointer transition-transform`}
-                                        onClick={() => handleImageSelect(image)}
-                                    >
-                                        <Image
-                                            src={image}
-                                            alt={`Sample image ${index + 1}`}
-                                            width={100}
-                                            height={100}
-                                            className="rounded-md"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
+            </div>
 
-                {/* Right side */}
-                <div className="w-full md:w-1/2 p-6 flex items-center justify-center bg-white">
-                    <div className="w-full h-full flex items-center justify-center">
-                        {selectedImage ? (
-                            <div className="w-full h-full">
-                                <Image
-                                    src={selectedImage}
-                                    alt="Selected image"
-                                    layout="fill"
-                                    className="rounded-lg"
-                                />
-                            </div>
-                        ) : (
-                            <div className="text-gray-500 text-center">
-                                <p className="text-xl font-semibold mb-2">No image selected</p>
-                                <p>Upload an image or select one from the list to view it here.</p>
-                            </div>
-                        )}
+            {/* Right side */}
+            <div className="w-full md:w-3/4 p-6 flex items-center justify-center bg-white">
+                {selectedImage ? (
+                    <div className="relative w-full h-full">
+                        <Image
+                            src={selectedImage}
+                            alt="Selected image"
+                            layout="fill"
+                            objectFit="contain"
+                            className="rounded-lg"
+                        />
                     </div>
-                </div>
-
+                ) : (
+                    <div className="text-gray-500 text-center">
+                        <p className="text-xl font-semibold mb-2">No image selected</p>
+                        <p>Upload an image or select one from the list to view it here.</p>
+                    </div>
+                )}
             </div>
         </section>
     );
