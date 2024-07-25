@@ -2,6 +2,7 @@ import CTA from "@/components/home/CTA";
 import FAQ from "@/components/home/FAQ";
 import Feature from "@/components/home/Feature";
 import Generator from "@/components/home/Generator";
+import FaceMix from "@/components/home/FaceMix";
 import Hero from "@/components/home/Hero";
 import ImageCarousel from "@/components/home/ImageCarousel";
 import Pricing from "@/components/home/Pricing";
@@ -30,7 +31,7 @@ export default async function LangHome({
       {/* Hero Section */}
       <Hero locale={dict.Hero} CTALocale={dict.CTAButton} />
 
-      <Generator id="Generator" locale={dict.Feature} langName={langName} />
+      <FaceMix id="Generator" locale={dict.Feature} langName={langName} />
 
       <ImageCarousel />
 
