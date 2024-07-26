@@ -3,6 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@nextui-org/react";
+import { toast } from "react-toastify";
 
 export default function FaceMix({
     id,
@@ -16,6 +17,8 @@ export default function FaceMix({
     const [uploadedImage, setUploadedImage] = useState<string | null>(null);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [selectImageIndex, setSelectImageIndex] = useState<number | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const router = useRouter();
 
     // Sample image list - replace with your actual image list
@@ -26,12 +29,44 @@ export default function FaceMix({
         // Add more images as needed
     ];
 
+    async function handleGenerateImage() {
+        setIsLoading(true);
+        try {
+            if (!uploadedFile) {
+                toast.error("Please upload an image first.");
+                return;
+            }
+            // 将文件转换为 base64
+            const base64String = await fileToBase64(uploadedFile);
+            const response = await fetch("/api/generate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ file: base64String }),
+            });
+
+            if (!response.ok) {
+                const errmsg = await response.text();
+                throw new Error(errmsg || response.statusText);
+            }
+
+            const data = await response.json();
+            router.push(`/picture/${data.id}`);
+        } catch (error: any) {
+            toast.error(`Failed to generate image: ${error.message}`);
+            console.error("Failed to generate image:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
 
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
+            setUploadedFile(file)
             const reader = new FileReader();
             reader.onload = (e) => setUploadedImage(e.target?.result as string);
             reader.readAsDataURL(file);
@@ -41,6 +76,16 @@ export default function FaceMix({
     const handleImageSelect = (image: string, index: number) => {
         setSelectImageIndex(index);
         setSelectedImage(image);
+    };
+
+    // 辅助函数：将文件转换为 base64
+    const fileToBase64 = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = error => reject(error);
+        });
     };
 
     return (
@@ -68,7 +113,7 @@ export default function FaceMix({
                     )}
                 </div>
                 <div className="bg-white rounded-lg shadow-md p-6 flex-grow">
-                    <h3 className="text-lg font-semibold mb-4">Sample Images</h3>
+                    <h3 className="text-lg font-semibold mb-4">Choose Template</h3>
                     <div className="flex space-x-4 pb-4 overflow-x-auto">
                         {imageList.map((image, index) => (
                             <Image
@@ -83,6 +128,15 @@ export default function FaceMix({
                         ))}
                     </div>
                 </div>
+                <div className="bg-white rounded-lg shadow-md p-6 flex-grow">
+                    {<Button
+                        type="button"
+                        className="flex w-full    items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white"
+                        onClick={handleGenerateImage}
+                    //   disabled={isLoading} // 禁用按钮
+                    >Generate</Button>}
+
+                </div>
             </div>
 
             {/* Right side */}
@@ -95,6 +149,7 @@ export default function FaceMix({
                             layout="fill"
                             objectFit="contain"
                             className="rounded-lg"
+
                         />
                     </div>
                 ) : (
