@@ -36,14 +36,15 @@ export default function FaceMix({
                 toast.error("Please upload an image first.");
                 return;
             }
+            
             // 将文件转换为 base64
-            const base64String = await fileToBase64(uploadedFile);
+            const base64String = await fileToBase64(uploadedFile);            
             const response = await fetch("/api/generate", {
-                method: "POST",
+                method: "faceSwap",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ file: base64String }),
+                body: JSON.stringify({ sourFile:base64String,targetFileUrl:selectedImage}),
             });
 
             if (!response.ok) {
@@ -131,7 +132,7 @@ export default function FaceMix({
                 <div className="bg-white rounded-lg shadow-md p-6 flex-grow">
                     {<Button
                         type="button"
-                        className="flex w-full    items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white"
+                        className="flex w-full  items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white"
                         onClick={handleGenerateImage}
                     //   disabled={isLoading} // 禁用按钮
                     >Generate</Button>}
