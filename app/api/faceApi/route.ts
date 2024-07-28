@@ -6,6 +6,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
+  console.log("POST /api/faceApi");
+  console.log("body:", body);  
   const { sourFile,targetFileUrl } = body;
   const { userId } = auth();
 
@@ -19,9 +21,10 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const ret = await faceswapAI(sourFile, targetFileUrl);
+    
+    const url = await faceswapAI(sourFile, targetFileUrl);        
     await consumeUserCredits(userId, creditsNeed);
-    const resp = JSON.stringify({ url: ret.url });
+    const resp = JSON.stringify({ url:url });
     return new NextResponse(resp, {
       status: 200,
       headers: { "Content-Type": "application/json" },

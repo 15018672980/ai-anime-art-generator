@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@nextui-org/react";
 import { toast } from "react-toastify";
+import { GetStaticProps } from 'next';
 
 export default function FaceMix({
     id,
@@ -23,17 +24,33 @@ export default function FaceMix({
 
     // Sample image list - replace with your actual image list
 
-    async function getImages(): Promise<String[]> {
-        const response = await fetch("/api/picture/manage", {
-            method: "getTempList",
+    async function getImages(): Promise<string[]> {
+        const response = await fetch("/api/pictureManage", {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
             }
-        });        
-        return response.json()
+        });
+        // 只读取一次响应流
+        const data = await response.json();
+        console.log("response data:", data); // 打印数据
+        return data;
     }
-    const imageList = getImages(); 
+    // const imageList:String[] = [""]; 
+    let imageList: string[] = [
+        "https://pub-e3ff540d6a85456b85074558bbbcf163.r2.dev/edhua.png",
+        "https://pub-e3ff540d6a85456b85074558bbbcf163.r2.dev/supperman.jpg",
+        "https://pub-e3ff540d6a85456b85074558bbbcf163.r2.dev/temp_001.jpg",
+    ];
 
+    // (async () => {
+    //     try {
+    //         imageList = await getImages();
+    //         console.log("Image list:", imageList);
+    //     } catch (error) {
+    //         console.error("Error fetching images:", error);
+    //     }
+    // })();
 
     async function handleGenerateImage() {
         setIsLoading(true);
@@ -45,21 +62,45 @@ export default function FaceMix({
 
             // 将文件转换为 base64
             const base64String = await fileToBase64(uploadedFile);
-            const response = await fetch("/api/faceApi", {
+            // const response = await fetch("/api/faceApi", {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify({ sourFile: base64String, targetFileUrl: selectedImage }),
+            // });
+
+            // if (!response.ok) {
+            //     const errmsg = await response.text();
+            //     throw new Error(errmsg || response.statusText);
+            // }
+
+            // const data = await response.json();
+            // setSelectedImage(data.url);
+
+            fetch("/api/faceApi", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ sourFile: base64String, targetFileUrl: selectedImage }),
-            });
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(errmsg => {
+                        throw new Error(errmsg || response.statusText);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                setSelectedImage(data.url);
+            })
+            .catch(error => {
+                console.error("Error occurred:", error);
+            });            
 
-            if (!response.ok) {
-                const errmsg = await response.text();
-                throw new Error(errmsg || response.statusText);
-            }
-
-            const data = await response.json();
-            router.push(`/picture/${data.id}`);
+            // router.push(`/picture/${data.id}`);
         } catch (error: any) {
             toast.error(`Failed to generate image: ${error.message}`);
             console.error("Failed to generate image:", error);
