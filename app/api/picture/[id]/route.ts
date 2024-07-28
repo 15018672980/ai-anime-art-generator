@@ -10,3 +10,4 @@ export async function GET(req: NextRequest) {
   return new Response(JSON.stringify(picture), { status: 200 });
 }
 
+

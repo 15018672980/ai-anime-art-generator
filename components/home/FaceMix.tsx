@@ -22,12 +22,18 @@ export default function FaceMix({
     const router = useRouter();
 
     // Sample image list - replace with your actual image list
-    const imageList = [
-        "/images/users/1.png",
-        "/images/users/2.png",
-        "/images/users/3.png",
-        // Add more images as needed
-    ];
+
+    async function getImages(): Promise<String[]> {
+        const response = await fetch("/api/picture/manage", {
+            method: "getTempList",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });        
+        return response.json()
+    }
+    const imageList = getImages(); 
+
 
     async function handleGenerateImage() {
         setIsLoading(true);
@@ -36,15 +42,15 @@ export default function FaceMix({
                 toast.error("Please upload an image first.");
                 return;
             }
-            
+
             // 将文件转换为 base64
-            const base64String = await fileToBase64(uploadedFile);            
-            const response = await fetch("/api/generate", {
-                method: "faceSwap",
+            const base64String = await fileToBase64(uploadedFile);
+            const response = await fetch("/api/faceApi", {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ sourFile:base64String,targetFileUrl:selectedImage}),
+                body: JSON.stringify({ sourFile: base64String, targetFileUrl: selectedImage }),
             });
 
             if (!response.ok) {
@@ -134,7 +140,7 @@ export default function FaceMix({
                         type="button"
                         className="flex w-full  items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white"
                         onClick={handleGenerateImage}
-                    //   disabled={isLoading} // 禁用按钮
+                        disabled={isLoading} // 禁用按钮
                     >Generate</Button>}
 
                 </div>
