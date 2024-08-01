@@ -72,9 +72,9 @@ function checkCredits(credits: UserCredits, count: number): boolean {
 function generateInitialUserCredits(): UserCredits {
   const initialUserCredits: UserCredits = {
     free: {
-      total: 100,
+      total: 10,
       used: 0,
-      left: 100,
+      left: 10,
     },
   };
   return initialUserCredits;

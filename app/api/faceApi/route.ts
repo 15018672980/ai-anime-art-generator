@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
   if (!userId) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
-  const creditsNeed = 10;
+  const creditsNeed = 5;
   const creditsEnough = await checkUserCredits(userId, creditsNeed);
   if (!creditsEnough) {
     return new NextResponse("Credits not enough", { status: 400 });

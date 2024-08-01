@@ -4,12 +4,12 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type Database = {
     public: {
       Tables: {       
-        gallery: {
+        Pictures: {
           Row: {
             id: number;
             imageUrl: string;
             imageDesc: string;
-            tags: string;
+            tags: string[];
             useTimes: number;
             fromCountry: string;
             create_time: string;
@@ -19,7 +19,7 @@ export type Database = {
             id?: never; // id 是自动生成的，不应在插入时提供
             imageUrl: string;
             imageDesc: string;
-            tags: string;
+            tags: string[];
             useTimes?: number;
             fromCountry: string;
             create_time?: string;
@@ -29,7 +29,7 @@ export type Database = {
             id?: never; // id 是不可更新的
             imageUrl?: string;
             imageDesc?: string;
-            tags?: string;
+            tags?: string[];
             useTimes?: number;
             fromCountry?: string;
             create_time?: string;
@@ -37,7 +37,7 @@ export type Database = {
           };
           Relationships: [];
         },
-        user_history: {
+        History: {
           Row: {
             id: number;
             userId: number;
@@ -85,8 +85,8 @@ export type Database = {
 
 
 
-export type Gallery = Database['public']['Tables']['gallery']['Row'];
-export type UserHistory = Database['public']['Tables']['user_history']['Row'];
+export type Picture = Database['public']['Tables']['Picture']['Row'];
+export type UserHistory = Database['public']['Tables']['History']['Row'];
 
 
 type PublicSchema = Database[Extract<keyof Database, 'public'>];

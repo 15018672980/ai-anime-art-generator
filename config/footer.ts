@@ -1,9 +1,9 @@
 import { FooterProps } from "@/types/footer";
 
 export const footerData: FooterProps = {
-  productTitle: "AI Anime Art Generator",
+  productTitle: "Baby Photoshoot",
   productDescription:
-    "A powerful AI-driven platform for creating high-quality anime characters and scenes. Perfect for beginners to easily create stunning anime art without any prior experience.",
+    "Transform ordinary baby photos into professional portraits with our AI Baby Photoshoot Creator - upload, choose from 100+ templates, and generate stunning infant memories in seconds.",
   columns: [
     // {
     //   title: "Our Products",

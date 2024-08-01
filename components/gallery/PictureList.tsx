@@ -18,8 +18,8 @@ export default function PictureList({ pictures }: { pictures: any }) {
           <Card key={index} className="p-4">
             <Image
               key={picture.id}
-              src={picture.url}
-              alt={picture.prompt}
+              src={picture.imageurl }
+              alt={picture.imagedesc}
               width={300}
               height={300}
               objectFit="cover"
