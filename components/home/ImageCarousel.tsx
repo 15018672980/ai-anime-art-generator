@@ -2,13 +2,15 @@
 import ImageGallery from "@/components/ImageGallery";
 const images = [
   {
-    src: "https://pub-e3ff540d6a85456b85074558bbbcf163.r2.dev/-Oo9VSj35eqSPeAV5GnyX.png",
+    // src: "https://pub-e3ff540d6a85456b85074558bbbcf163.r2.dev/-Oo9VSj35eqSPeAV5GnyX.png",
+    src: "https://pub-e3ff540d6a85456b85074558bbbcf163.r2.dev/edhua.png",
     alt: "Girl in Sea",
     href: "#",
     tags: ["Girl", "Sea"],
   },
   {
-    src: "https://pub-e3ff540d6a85456b85074558bbbcf163.r2.dev/YLRdeIBGH5nqPUBy7O6I3.png",
+    // src: "https://pub-e3ff540d6a85456b85074558bbbcf163.r2.dev/YLRdeIBGH5nqPUBy7O6I3.png",'
+    src: "https://pub-e3ff540d6a85456b85074558bbbcf163.r2.dev/supperman.jpg",
     alt: "Magic",
     href: "#",
     tags: ["Girl", "Magic"],

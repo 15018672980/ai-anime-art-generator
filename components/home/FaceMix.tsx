@@ -324,7 +324,8 @@ export default function FaceMix({
                                 disabled={isLoading} // 禁用按钮
                             >
                                 <svg viewBox="0 0 1024 1024" version="1.1" width="200" height="200">
-                                    <path d="M800 768H224a32 32 0 0 1-32-32V384a32 32 0 0 1 32-32h64a32 32 0 1 1 0 64H256v288h512v-288h-32a32 32 0 0 1 0-64h64a32 32 0 0 1 32 32v352a32 32 0 0 1-32 32z m-320-236.8V288a32 32 0 1 1 64 0v242.56l40.96-40.96a32 32 0 0 1 45.12 45.12L537.6 627.2a31.936 31.936 0 0 1-25.6 12.8 32 32 0 0 1-22.72-9.28l-96-96a32 32 0 0 1 45.12-45.12l41.6 41.6z" fill="#ffffff" p-id="43585" data-spm-anchor-id="a313x.search_index.0.i21.4b363a811CBRfZ" class="selected"></path>
+                                    <path d="M800 768H224a32 32 0 0 1-32-32V384a32 32 0 0 1 32-32h64a32 32 0 1 1 0 64H256v288h512v-288h-32a32 32 0 0 1 0-64h64a32 32 0 0 1 32 32v352a32 32 0 0 1-32 32z m-320-236.8V288a32 32 0 1 1 64 0v242.56l40.96-40.96a32 32 0 0 1 45.12 45.12L537.6 627.2a31.936 31.936 0 0 1-25.6 12.8 32 32 0 0 1-22.72-9.28l-96-96a32 32 0 0 1 45.12-45.12l41.6 41.6z" fill="#ffffff" p-id="43585"
+                                     data-spm-anchor-id="a313x.search_index.0.i21.4b363a811CBRfZ" className="selected"></path>
                                 </svg>
                             </Button>
                         </div>
