@@ -12,15 +12,15 @@ import {
 
 export const FEATURES_EN = [
   {
-    title: "AI-Powered Art Creation",
+    title: "AI-Powered Baby Photoshoot",
     content:
-      "Generate high-quality anime characters and scenes using advanced AI algorithms.",
+      "Generate high-quality baby photos using advanced AI algorithms.",
     icon: AiOutlineTag,
   },
   {
-    title: "Customization Options",
+    title: "Affordable Pricing",
     content:
-      "Personalize your creations with various styles, colors, and expressions.",
+      "Leveraging AI technology to offer more economical photography services compared to traditional studios.",
     icon: AiOutlineEdit,
   },
   {
@@ -41,9 +41,9 @@ export const FEATURES_EN = [
     icon: AiOutlineShareAlt,
   },
   {
-    title: "High-Resolution Outputs",
+    title: "Free Trial",
     content:
-      "Export your artwork in high resolution for professional use and printing.",
+      "Experience our services at no cost with a free trial.",
     icon: AiOutlineStar,
   },
 ];

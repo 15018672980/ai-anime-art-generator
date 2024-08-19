@@ -13,6 +13,11 @@ import { ThemedButton } from "../ThemedButton";
 
 const links = [
   {
+    label: "Home",
+    href: "/",
+    title: "Home",
+  },
+  {
     label: "Gallery",
     href: "/gallery",
     title: "Gallery",
@@ -27,16 +32,16 @@ const links = [
   //   href: "#WallOfLove",
   //   title: "Wall of Love",
   // },
-  {
-    label: "Pricing",
-    href: "/#Pricing",
-    title: "Pricing",
-  },
-  {
-    label: "FAQ",
-    href: "/#FAQ",
-    title: "FAQ",
-  },
+  // {
+  //   label: "Pricing",
+  //   href: "/#Pricing",
+  //   title: "Pricing",
+  // },
+  // {
+  //   label: "FAQ",
+  //   href: "/#FAQ",
+  //   title: "FAQ",
+  // },
 ];
 
 const Header = () => {
@@ -47,8 +52,8 @@ const Header = () => {
         <div className="flex items-center md:gap-x-12">
           <Link
             href="/"
-            aria-label="AI Anime Art Generator"
-            title="AI Anime Art Generator"
+            aria-label="Baby Photoshoot"
+            title="Baby Photoshoot"
             className="flex items-center space-x-1 font-bold"
           >
             <Image

@@ -38,12 +38,13 @@ const baseSiteConfig = {
     apple: "/logo.png",
   },
   headerLinks: [
-    { name: "repo", href: OPEN_SOURCE_URL, icon: BsGithub },
-    {
-      name: "twitter",
-      href: "https://twitter.com/enterwiz",
-      icon: BsTwitterX,
-    },
+    // 注释掉链接，后面有了再加上
+    // { name: "repo", href: OPEN_SOURCE_URL, icon: BsGithub },
+    // {
+    //   name: "twitter",
+    //   href: "https://twitter.com/enterwiz",
+    //   icon: BsTwitterX,
+    // },
   ],
   footerLinks: [
     { name: "email", href: "mailto:enterwizdev@outlook.com", icon: MdEmail },

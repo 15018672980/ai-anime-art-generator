@@ -20,6 +20,12 @@ const config = {
       },
     },
     extend: {
+      height: {  
+        '75': '75px',  
+        '150': '150px',  
+        '500': '500px',
+        // 添加你需要的其他高度值  
+      },  
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

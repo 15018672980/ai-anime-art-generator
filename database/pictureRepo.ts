@@ -1,59 +1,98 @@
-import { db } from "@/database/database";
+// import { db } from "@/database/database";
 import { PictureStatus } from "@/prisma/enums";
-import { Picture } from "@/prisma/types";
-import { Insertable, Selectable } from "kysely";
+// import { Picture } from "@/prisma/types";
+import {Pictures} from "@/database/supbaseTypes";
+// import { Insertable, Selectable } from "kysely";
+import { createClient } from '@/database/supabaseClient';
 
+const supabase = createClient();
 export async function findPictureById(id: string) {
-  return await db
-    .selectFrom("Picture")
-    .where("id", "=", id)
-    .selectAll()
-    .executeTakeFirst();
+  const { data, error } = await supabase
+    .from("pictures")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    throw new Error(`Error finding picture by id: ${error.message}`);
+  }
+
+  return data;
 }
 
-export async function findPictures(criteria: Partial<Selectable<Picture>>) {
-  let query = db.selectFrom("Picture");
+export async function findPictures(criteria: Partial<Pictures>) {
+  let query = supabase.from("pictures").select("*");  
+
   if (criteria.id) {
-    query = query.where("id", "=", criteria.id); // Kysely is immutable, you must re-assign!
+    query = query.eq("id", criteria.id);
   }
-  if (criteria.userId) {
-    query = query.where("userId", "=", criteria.userId);
+  // if (criteria.userId) {
+  //   query = query.eq("userId", criteria.userId);
+  // }
+
+  const { data, error } = await query;
+
+  if (error) {
+    throw new Error(`Error finding pictures: ${error.message}`);
   }
-  return await query.selectAll().execute();
+
+  return data;
 }
 
 export async function getTotalPicturesCount(): Promise<number> {
-  const result = await db
-    .selectFrom("Picture")
-    .select(db.fn.count("id").as("count"))
-    .executeTakeFirst();
+  const { data, error } = await supabase
+    .from("Picture")
+    .select("id", { count: "exact" });
 
-  return Number(result?.count || 0);
+  if (error) {
+    throw new Error(`Error getting total pictures count: ${error.message}`);
+  }
+
+  return data.length;
 }
 
 export async function listPicturesPaginated(page: number, pageSize: number) {
   const offset = (page - 1) * pageSize;
-  let query = db
-    .selectFrom("Picture")
-    .orderBy("createdAt desc")
-    .limit(pageSize)
-    .offset(offset);
-  return await query.selectAll().execute();
+
+  const { data, error } = await supabase
+    .from("Picture")
+    .select("*")
+    .order("create_time", { ascending: false })
+    .range(offset, offset + pageSize - 1);
+
+  if (error) {
+    throw new Error(`Error listing pictures: ${error.message}`);
+  }
+
+  return data;
 }
 
-export async function createPicture(picture: Insertable<Picture>) {
-  return await db
-    .insertInto("Picture")
-    .values(picture)
-    .returningAll()
-    .executeTakeFirstOrThrow();
+export async function createPicture(picture: Partial<Pictures>) {
+  const { data, error } = await supabase
+    .from("Picture")
+    .insert(picture)
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(`Error creating picture: ${error.message}`);
+  }
+
+  return data;
 }
 
 export async function deletePicture(id: string) {
-  return await db
-    .updateTable("Picture")
-    .set({ status: PictureStatus.DELETED })
-    .where("id", "=", id)
-    .execute();
+  const { data, error } = await supabase
+    .from("Picture")
+    .update({ status: PictureStatus.DELETED })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(`Error deleting picture: ${error.message}`);
+  }
+
+  return data;
 }
 

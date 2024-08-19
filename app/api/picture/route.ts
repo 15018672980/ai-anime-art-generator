@@ -23,3 +23,5 @@ export async function GET(req: NextRequest) {
   return new Response(JSON.stringify(pictures), { status: 200 });
 }
 
+
+

@@ -46,13 +46,13 @@ export default async function LangHome({
       {/* <WallOfLove id="WallOfLove" locale={dict.WallOfLove} /> */}
 
       {/* Pricing */}
-      <Pricing id="Pricing" locale={dict.Pricing} langName={langName} />
+      {/* <Pricing id="Pricing" locale={dict.Pricing} langName={langName} /> */}
 
       {/* FAQ (Frequently Asked Questions) */}
-      <FAQ id="FAQ" locale={dict.FAQ} langName={langName} />
+      {/* <FAQ id="FAQ" locale={dict.FAQ} langName={langName} /> */}
 
       {/* CTA (Call to Action) */}
-      <CTA locale={dict.CTA} CTALocale={dict.CTAButton} />
+      {/* <CTA locale={dict.CTA} CTALocale={dict.CTAButton} /> */}
     </>
   );
 }

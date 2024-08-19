@@ -1,13 +1,8 @@
 export default function Waitlist() {
   return (
     <>
-      <iframe
-        src="https://docs.google.com/forms/d/e/1FAIpQLSd8q43G6xKk4WgAg5wNGqScqRIILjFvfQ4ochhFPuRnsNaF0w/viewform?embedded=true"
-        width="640"
-        height="1050"
-      >
-        正在加载…
-      </iframe>
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeZ2JV7dm83G3G2hXLFRmEkSDpo0e7128_WnUZgc2DGbEGctQ/viewform?embedded=true" width="640" height="1050" 
+     >Loading…</iframe>
     </>
   );
 }
