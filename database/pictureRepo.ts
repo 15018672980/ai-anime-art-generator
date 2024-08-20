@@ -1,7 +1,7 @@
 // import { db } from "@/database/database";
 import { PictureStatus } from "@/prisma/enums";
 // import { Picture } from "@/prisma/types";
-import {Pictures} from "@/database/supbaseTypes";
+import {Picture} from "@/database/supbaseTypes";
 // import { Insertable, Selectable } from "kysely";
 import { createClient } from '@/database/supabaseClient';
 
@@ -20,7 +20,7 @@ export async function findPictureById(id: string) {
   return data;
 }
 
-export async function findPictures(criteria: Partial<Pictures>) {
+export async function findPictures(criteria: Partial<Picture>) {
   let query = supabase.from("pictures").select("*");  
 
   if (criteria.id) {
@@ -67,7 +67,7 @@ export async function listPicturesPaginated(page: number, pageSize: number) {
   return data;
 }
 
-export async function createPicture(picture: Partial<Pictures>) {
+export async function createPicture(picture: Partial<Picture>) {
   const { data, error } = await supabase
     .from("Picture")
     .insert(picture)
