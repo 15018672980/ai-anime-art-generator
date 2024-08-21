@@ -21,8 +21,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    
-    const url = await faceswapAI(sourFile, targetFileUrl);        
+    const url =  await faceswapAI(sourFile, targetFileUrl);        
     await consumeUserCredits(userId, creditsNeed);
     const resp = JSON.stringify({ url:url });
     return new NextResponse(resp, {

@@ -5,27 +5,23 @@ import { MdEmail } from "react-icons/md";
 const OPEN_SOURCE_URL = "https://github.com/enterwiz/aianimeartgenerator";
 
 const baseSiteConfig = {
-  name: "AI Anime Art Generator | Create stunning anime art with the power of AI.",
+  name: "Baby Photoshoot | Create baby photoshoot with the power of AI.",
   description:
-    "Unleash your creativity and craft breathtaking anime art effortlessly with our advanced AI-powered generator.",
-  url: "https://aianimeartgenerator.com",
+    "Create studio-quality baby photoshoots effortlessly with our advanced AI generator.",
+  url: "https://babyphotoshoot.com",
   ogImage: "",
   metadataBase: "/",
   keywords: [
-    "AI Art",
-    "Anime Art",
-    "Character Design",
-    "Digital Art",
-    "Art Generator",
+    "Baby photoshoot"
   ],
   authors: [
     {
-      name: "enterwiz",
-      url: "https://github.com/enterwiz",
-      twitter: "https://twitter.com/enterwiz",
+      name: "hanterchen",
+      url: "",
+      twitter: "",
     },
   ],
-  creator: "@enterwiz",
+  creator: "@hanter",
   openSourceURL: OPEN_SOURCE_URL,
   themeColors: [
     { media: "(prefers-color-scheme: light)", color: "white" },

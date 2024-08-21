@@ -6,6 +6,7 @@ import { Button } from "@nextui-org/react";
 import { toast } from "react-toastify";
 import { GetStaticProps } from 'next';
 import { WAITLIST_FORM_LINK } from "@/config/tiers";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function FaceMix({
     id,
@@ -96,6 +97,10 @@ export default function FaceMix({
                 toast.error("Please upload an image first.");
                 return;
             }
+            if(!selectedImage){
+                toast.error("Please Choose Template.");
+                return;
+            }
 
             // 将文件转换为 base64
             const base64String = await fileToBase64(uploadedFile);
@@ -125,7 +130,8 @@ export default function FaceMix({
                 .then(response => {
                     if (!response.ok) {
                         return response.text().then(errmsg => {
-                            throw new Error(errmsg || response.statusText);
+                            toast.error(`${errmsg || response.statusText}`);
+                            return;
                         });
                     }
                     return response.json();
@@ -315,7 +321,8 @@ export default function FaceMix({
                                 alt="Selected image"
                                 layout="fill"
                                 objectFit="contain"
-                                className="rounded-lg"
+                                className="rounded-lg"   
+                                unoptimized={true}
                             />
                             <Button
                                 type="button"
