@@ -2,7 +2,8 @@ import { checkUserCredits, consumeUserCredits } from "@/actions/credits";
 import { faceswapAI } from "@/actions/faceMeger";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
-
+// 超时时间设置为60秒
+export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
