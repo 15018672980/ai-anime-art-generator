@@ -14,7 +14,7 @@ export async function faceswapAI(swapImage: string, templateImageUrl: string) {
   // 延迟3秒查询
   await delay(7000);
   // //3.请求查询requestId返回base64结果   
-  let resultData = null;
+  let resultData= null;
   while (true) {
     await delay(2000);
     let resultData = await getResult(requestId);
@@ -24,14 +24,17 @@ export async function faceswapAI(swapImage: string, templateImageUrl: string) {
   }
   //计算耗时
   console.log('耗时：' + (Date.now() - timestamp) / 1000 + '秒');  
- 
+  console.log('resultData:', resultData);  
   // const resultUrl ='http://worker-images.ws.pho.to/i2/4531c195176f4f1edd6618d6dd4783c1ef5cef1a_result.jpeg';
   //4.上传到oss,todo 失败要重试
-  // const ossUrl = await downloadAndUploadImage(resultUrl)
+  if (resultData == null) {
+    throw new Error('faceswapAI failed result is empty');
+  }
+  const ossUrl = await downloadAndUploadImage(resultData)
   //5.todo 上传oss的文件？后续处理   
 
   //6.返回结果
-  return resultData;
+  return ossUrl;
 }
 function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
