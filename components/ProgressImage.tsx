@@ -23,7 +23,8 @@ const ProgressImage: React.FC<ProgressImageProps> = ({
 }) => {
     const [progress, setProgress] = useState(0);
 
-    let triggerConfettiOld:number = 0
+    const [triggerConfettiOld, setTriggerConfettiOld] = useState<Number | null>(0);
+    
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -50,7 +51,7 @@ const ProgressImage: React.FC<ProgressImageProps> = ({
 
     useEffect(() => {
         if (triggerConfetti!=triggerConfettiOld) {
-            triggerConfettiOld = triggerConfetti
+            setTriggerConfettiOld(triggerConfetti)
             confetti({
                 particleCount: 100,
                 spread: 160,

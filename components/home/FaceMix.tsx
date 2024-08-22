@@ -25,8 +25,8 @@ export default function FaceMix({
     const [isLoading, setIsLoading] = useState(false);
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
-    const [triggerConfetti, setTriggerConfetti] = useState<Number | null>(0);
-    const [showOverlay, setShowOverlay] = useState<Boolean | null>(false);
+    const [triggerConfetti, setTriggerConfetti] = useState<number>(0);
+    const [showOverlay, setShowOverlay] = useState<boolean>(false);
     const router = useRouter();
 
     // Sample image list - replace with your actual image list
