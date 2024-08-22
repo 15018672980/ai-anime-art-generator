@@ -25,7 +25,7 @@ export default function FaceMix({
     const [isLoading, setIsLoading] = useState(false);
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
-    const [triggerConfetti, setTriggerConfetti] = useState<Number | null>(null);
+    const [triggerConfetti, setTriggerConfetti] = useState<Number | null>(0);
     const [showOverlay, setShowOverlay] = useState<Boolean | null>(false);
     const router = useRouter();
 
@@ -100,67 +100,67 @@ export default function FaceMix({
         setShowOverlay(!showOverlay)
         // 当前时间戳
         setTriggerConfetti(Date.now())
-        try {
-            if (!uploadedFile) {
-                toast.error("Please upload an image first.");
-                return;
-            }
-            if (!selectedImage) {
-                toast.error("Please Choose Template.");
-                return;
-            }
+        // try {
+        //     if (!uploadedFile) {
+        //         toast.error("Please upload an image first.");
+        //         return;
+        //     }
+        //     if (!selectedImage) {
+        //         toast.error("Please Choose Template.");
+        //         return;
+        //     }
 
-            // 将文件转换为 base64
-            const base64String = await fileToBase64(uploadedFile);
-            // const response = await fetch("/api/faceApi", {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify({ sourFile: base64String, targetFileUrl: selectedImage }),
-            // });
+        //     // 将文件转换为 base64
+        //     const base64String = await fileToBase64(uploadedFile);
+        //     // const response = await fetch("/api/faceApi", {
+        //     //     method: "POST",
+        //     //     headers: {
+        //     //         "Content-Type": "application/json",
+        //     //     },
+        //     //     body: JSON.stringify({ sourFile: base64String, targetFileUrl: selectedImage }),
+        //     // });
 
-            // if (!response.ok) {
-            //     const errmsg = await response.text();
-            //     throw new Error(errmsg || response.statusText);
-            // }
+        //     // if (!response.ok) {
+        //     //     const errmsg = await response.text();
+        //     //     throw new Error(errmsg || response.statusText);
+        //     // }
 
-            // const data = await response.json();
-            // setSelectedImage(data.url);
+        //     // const data = await response.json();
+        //     // setSelectedImage(data.url);
 
-            fetch("/api/faceApi", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ sourFile: base64String, targetFileUrl: selectedImage }),
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.text().then(errmsg => {
-                            toast.error(`${errmsg || response.statusText}`);
-                            return;
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    setSelectedImage(data.url);
-                    setShowOverlay(false)
-                    // 当前时间戳
-                    setTriggerConfetti(Date.now())
-                })
-                .catch(error => {
-                    console.error("Error occurred:", error);
-                });
+        //     fetch("/api/faceApi", {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //         body: JSON.stringify({ sourFile: base64String, targetFileUrl: selectedImage }),
+        //     })
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 return response.text().then(errmsg => {
+        //                     toast.error(`${errmsg || response.statusText}`);
+        //                     return;
+        //                 });
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(data => {
+        //             setSelectedImage(data.url);
+        //             setShowOverlay(false)
+        //             // 当前时间戳
+        //             setTriggerConfetti(Date.now())
+        //         })
+        //         .catch(error => {
+        //             console.error("Error occurred:", error);
+        //         });
 
-            // router.push(`/picture/${data.id}`);
-        } catch (error: any) {
-            toast.error(`Failed to generate image: ${error.message}`);
-            console.error("Failed to generate image:", error);
-        } finally {
-            setIsLoading(false);
-        }
+        //     // router.push(`/picture/${data.id}`);
+        // } catch (error: any) {
+        //     toast.error(`Failed to generate image: ${error.message}`);
+        //     console.error("Failed to generate image:", error);
+        // } finally {
+        //     setIsLoading(false);
+        // }
     }
 
     async function downloadImage() {
