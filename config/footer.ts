@@ -5,16 +5,31 @@ export const footerData: FooterProps = {
   productDescription:
     "Transform ordinary baby photos into professional portraits with our AI Baby Photoshoot Creator - upload, choose from 100+ templates, and generate stunning infant memories in seconds.",
   columns: [
-    // {
-    //   title: "Our Products",
-    //   links: [
-    //     {
-    //       name: "AI Tag Generator",
-    //       title: "AI Tag Generator",
-    //       href: "https://ai-tag-generator.com",
-    //     },
-    //   ],
-    // },
+    {
+      title: "Our Products",
+      links: [
+        {
+          name: "Baby Photoshoot",
+          title: "Baby Photoshoot | Create baby photoshoot with the power of AI.",
+          href: "https://www.babyPhotoshoot.com",
+        },
+      ],
+    },
+    {
+      title: "site privacy",
+      links: [
+        {
+          name: "Privacy Policy",
+          title: "Privacy Policy",
+          href: "/privacy",
+        },
+        {
+          name: "Terms of Service",
+          title: "Terms of Service",
+          href: "/terms",
+        },
+      ],
+    }
     // {
     //   title: "Useful Links",
     //   links: [
