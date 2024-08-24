@@ -11,8 +11,6 @@ export async function faceswapAI(swapImage: string, templateImageUrl: string) {
   // 当前时间
   const timestamp = Date.now();
   const requestId = await faceMeger(templateImageUrl, url)
-  // 延迟3秒查询
-  await delay(7000);
   // //3.请求查询requestId返回base64结果   
   let finalResultData= null;
   while (true) {
@@ -34,7 +32,19 @@ export async function faceswapAI(swapImage: string, templateImageUrl: string) {
   if (finalResultData == null) {
     throw new Error('faceswapAI failed result is empty');
   }
-  const ossUrl = await downloadAndUploadImage(finalResultData)
+  let ossUrl = null;
+  let i = 0;
+  while(i<3){
+    try{
+      ossUrl = await downloadAndUploadImage(finalResultData)
+      break;
+    }
+    catch(error){
+      console.log('downloadAndUploadImage error:', error);
+      i++;
+      continue
+    }
+  }
   //5.todo 上传oss的文件？后续处理   
 
   //6.返回结果

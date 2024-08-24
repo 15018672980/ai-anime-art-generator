@@ -4,9 +4,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@nextui-org/react";
 import { toast } from "react-toastify";
-import { GetStaticProps } from 'next';
+// import { GetStaticProps } from 'next';
 import { WAITLIST_FORM_LINK } from "@/config/tiers";
 import "react-toastify/dist/ReactToastify.css";
+import ProgressImage from '@/components/ProgressImage';
+
 
 export default function FaceMix({
     id,
@@ -22,6 +24,9 @@ export default function FaceMix({
     const [selectImageIndex, setSelectImageIndex] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
+    const [triggerConfetti, setTriggerConfetti] = useState<number>(0);
+    const [showOverlay, setShowOverlay] = useState<boolean>(false);
     const router = useRouter();
 
     // Sample image list - replace with your actual image list
@@ -92,12 +97,14 @@ export default function FaceMix({
 
     async function handleGenerateImage() {
         setIsLoading(true);
+        setShowOverlay(true)
+       
         try {
             if (!uploadedFile) {
                 toast.error("Please upload an image first.");
                 return;
             }
-            if(!selectedImage){
+            if (!selectedImage) {
                 toast.error("Please Choose Template.");
                 return;
             }
@@ -138,9 +145,15 @@ export default function FaceMix({
                 })
                 .then(data => {
                     setSelectedImage(data.url);
+                    setShowOverlay(false)
+                    setIsLoading(false);
+                    // 当前时间戳
+                    setTriggerConfetti(Date.now())
                 })
                 .catch(error => {
                     console.error("Error occurred:", error);
+                    setShowOverlay(false)
+                    setIsLoading(false);
                 });
 
             // router.push(`/picture/${data.id}`);
@@ -148,27 +161,26 @@ export default function FaceMix({
             toast.error(`Failed to generate image: ${error.message}`);
             console.error("Failed to generate image:", error);
         } finally {
-            setIsLoading(false);
         }
     }
 
     async function downloadImage() {
         try {
-            if (!selectedImage) {return }
+            if (!selectedImage) { return }
             // 使用 fetch 获取图片资源
             const response = await fetch(selectedImage);
             if (!response.ok) {
-              throw new Error(`Failed to fetch image: ${response.status}`);
+                throw new Error(`Failed to fetch image: ${response.status}`);
             }
-        
+
             // 创建 Blob 对象
             const blob = await response.blob();
-        
+
             // 创建一个隐藏的 <a> 标签
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
 
-                // 获取当前时间戳
+            // 获取当前时间戳
             const timestamp = Date.now().toString();
             // 生成一个四位数的随机数
             const randomNumber = Math.floor(Math.random() * 9000 + 1000).toString();
@@ -177,32 +189,32 @@ export default function FaceMix({
 
             link.setAttribute('download', `${fileName}.${getFileType(blob.type)}`);
             link.style.display = 'none';
-        
+
             // 将链接添加到文档中并触发点击事件
             document.body.appendChild(link);
             link.click();
-        
+
             // 清理工作
             document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
-          } catch (error) {
+        } catch (error) {
             console.error('Error downloading the image:', error);
-          }
+        }
     }
 
 
     function getFileType(mimeType: string): string {
         switch (mimeType) {
-          case 'image/jpeg':
-            return 'jpg';
-          case 'image/png':
-            return 'png';
-          case 'image/gif':
-            return 'gif';
-          default:
-            return 'unknown';
+            case 'image/jpeg':
+                return 'jpg';
+            case 'image/png':
+                return 'png';
+            case 'image/gif':
+                return 'gif';
+            default:
+                return 'unknown';
         }
-      }
+    }
 
     function generateImageFileName(blob: Blob): string {
         // 获取当前时间戳
@@ -211,7 +223,7 @@ export default function FaceMix({
         const randomNumber = Math.floor(Math.random() * 9000 + 1000).toString();
         // 构建文件名
         const fileNameBase = `image-${timestamp}-${randomNumber}`;
-    
+
         // 根据MIME类型确定文件扩展名
         const mimeTypeToExtensionMap: { [key: string]: string } = {
             'image/jpeg': 'jpg',
@@ -220,9 +232,9 @@ export default function FaceMix({
             'image/webp': 'webp',
             // 添加更多映射
         };
-    
+
         const extension = mimeTypeToExtensionMap[blob.type] || 'unknown';
-    
+
         return `${fileNameBase}.${extension}`;
     }
 
@@ -280,12 +292,12 @@ export default function FaceMix({
                             )}
                         </div>
                         {/* <div className="bg-white rounded-lg shadow-md p-6 flex-grow"> */}
-                            {<Button
-                                type="button"
-                                className="flex w-full  items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white mt-3"
-                                onClick={handleGenerateImage}
-                                disabled={isLoading} // 禁用按钮
-                            >Generate</Button>}
+                        {<Button
+                            type="button"
+                            className="flex w-full  items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white mt-3"
+                            onClick={handleGenerateImage}
+                            disabled={isLoading} // 禁用按钮
+                        >Generate</Button>}
 
                         {/* </div> */}
                     </div>
@@ -293,7 +305,7 @@ export default function FaceMix({
                         <h3 className="text-lg font-semibold mb-4">Choose Template</h3>
                         <div className="flex space-x-4 pb-4 overflow-x-auto">
                             {imageList.map((image, index) => (
-                            // <div className="inline-block">
+                                // <div className="inline-block">
                                 <Image
                                     key={index}
                                     src={image}
@@ -304,35 +316,44 @@ export default function FaceMix({
                                     className={selectImageIndex === index ? 'border-4 border-black rounded-md cursor-pointer my-auto' : 'rounded-md cursor-pointer my-auto'}
                                     onClick={() => handleImageSelect(image, index)}
                                 />
-                            // </div>
-                          ))}
+                                // </div>
+                            ))}
                         </div>
                     </div>
 
-                  
+
                 </div>
 
                 {/* Bottom side */}
                 <div className="w-full h-500 p-6 flex items-center justify-center">
                     {selectedImage ? (
                         <div className="relative w-full h-full">
-                            <Image
+                            <ProgressImage
+                                src={selectedImage}
+                                alt="描述"
+                                width={500}
+                                height={300}
+                                showOverlay={showOverlay}
+                                durationInSeconds={30}
+                                triggerConfetti={triggerConfetti}
+                            />
+                            {/* <Image
                                 src={selectedImage}
                                 alt="Selected image"
                                 layout="fill"
                                 objectFit="contain"
-                                className="rounded-lg"   
+                                className="rounded-lg"
                                 unoptimized={true}
-                            />
+                            /> */}
                             <Button
                                 type="button"
                                 className="absolute items-center px-0 bg-gray-800 hover:bg-gray-900 text-white mt-3 min-w-10 right-0 bottom-10"
-                                onClick={downloadImage}    
+                                onClick={downloadImage}
                                 disabled={isLoading} // 禁用按钮
                             >
                                 <svg viewBox="0 0 1024 1024" version="1.1" width="200" height="200">
                                     <path d="M800 768H224a32 32 0 0 1-32-32V384a32 32 0 0 1 32-32h64a32 32 0 1 1 0 64H256v288h512v-288h-32a32 32 0 0 1 0-64h64a32 32 0 0 1 32 32v352a32 32 0 0 1-32 32z m-320-236.8V288a32 32 0 1 1 64 0v242.56l40.96-40.96a32 32 0 0 1 45.12 45.12L537.6 627.2a31.936 31.936 0 0 1-25.6 12.8 32 32 0 0 1-22.72-9.28l-96-96a32 32 0 0 1 45.12-45.12l41.6 41.6z" fill="#ffffff" p-id="43585"
-                                     data-spm-anchor-id="a313x.search_index.0.i21.4b363a811CBRfZ" className="selected"></path>
+                                        data-spm-anchor-id="a313x.search_index.0.i21.4b363a811CBRfZ" className="selected"></path>
                                 </svg>
                             </Button>
                         </div>
