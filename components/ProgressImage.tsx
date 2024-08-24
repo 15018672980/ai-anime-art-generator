@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useReducer } from 'react';
 import Image from 'next/image';
 import confetti from 'canvas-confetti';
 
@@ -22,6 +22,7 @@ const ProgressImage: React.FC<ProgressImageProps> = ({
     triggerConfetti,  // 新增的参数
 }) => {
     const [progress, setProgress] = useState(0);
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
 
     const [triggerConfettiOld, setTriggerConfettiOld] = useState<Number | null>(0);
     
@@ -43,6 +44,7 @@ const ProgressImage: React.FC<ProgressImageProps> = ({
         } else {
             setProgress(0);
         }
+        forceUpdate()
 
         return () => {
             if (interval) clearInterval(interval);
@@ -57,6 +59,7 @@ const ProgressImage: React.FC<ProgressImageProps> = ({
                 spread: 160,
                 origin: { y: 0.6 },
             });
+            forceUpdate();
         }
     }, [triggerConfetti]);
 
